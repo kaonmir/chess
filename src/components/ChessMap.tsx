@@ -74,6 +74,10 @@ class ChessMap extends React.Component<Props, States> {
     }
   };
 
+  componentDidUpdate(_: Props, prevState: States) {
+    if (this.state.chess.isCheckMate()) alert("Checkmate!!");
+  }
+
   render() {
     const { availableZone } = this.state;
     return <ChessMapBox> {this.displayMap(availableZone)}</ChessMapBox>;

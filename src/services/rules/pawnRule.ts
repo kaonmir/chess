@@ -1,5 +1,5 @@
 import ruleIF from "./ruleIF";
-import { EMPTY_PIECE } from "../types/Piece";
+import { EMPTY_PIECE, isEmptyPiece } from "../types/Piece";
 import SIDE from "../types/SIDE";
 import ErrorMessage from "../types/string";
 import { isEnemy } from "../types/Piece";
@@ -7,17 +7,25 @@ import { isEnemy } from "../types/Piece";
 const pawnRule: ruleIF = {
   availableZone: (map, cur) => {
     const steps: { [id: number]: Array<number> } = {
-      [SIDE.BLACK]: [8, 7, 9], // F, L, R
-      [SIDE.WHITE]: [-8, -9, -7], // F, L, R
+      [SIDE.BLACK]: [8, 16, 7, 9], // F, L, R
+      [SIDE.WHITE]: [-8, -16, -9, -7], // F, L, R
+    };
+    const initPosition: { [id: number]: number } = {
+      [SIDE.BLACK]: 1,
+      [SIDE.WHITE]: 6,
     };
 
-    return steps[map[cur].side]
-      .map((step) => step + cur)
-      .filter((dst, idx) => {
-        if (idx === 0) return map[dst].side === SIDE.EMPTY;
+    const side = map[cur].side;
 
-        if (idx === 1 && dst % 8 === 7) return false;
-        if (idx === 2 && dst % 8 === 0) return false;
+    return steps[side]
+      .map((step) => step + cur)
+      .filter((dst, idx, dsts) => {
+        if (idx === 0) return isEmptyPiece(map[dst]);
+        if (idx === 1 && Math.floor(cur / 8) === initPosition[side])
+          return isEmptyPiece(map[dsts[idx - 1]]) && isEmptyPiece(map[dst]);
+
+        if (idx === 2 && dst % 8 === 7) return false;
+        if (idx === 3 && dst % 8 === 0) return false;
 
         return isEnemy(map[cur], map[dst]);
       });

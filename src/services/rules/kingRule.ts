@@ -4,11 +4,22 @@ import ErrorMessage from "../types/string";
 
 const kingRule: ruleIF = {
   availableZone: (map, cur) => {
-    const steps = [-9, -8, -7, -1, 1, 7, 8, 9];
-    return steps
-      .map((step) => step + cur)
-      .filter((dst) => 0 <= dst && dst < 64) // out of bound
-      .filter((dst) => map[cur].side !== map[dst].side); // empty or enemy
+    const p = { x: Math.floor(cur / 8), y: cur % 8 };
+    const movable: [number, number][] = [
+      [-1, -1],
+      [-1, 0],
+      [-1, 1],
+      [0, -1],
+      [0, 1],
+      [1, -1],
+      [1, 0],
+      [1, 1],
+    ];
+    return movable
+      .map(([x, y]) => [x + p.x, y + p.y])
+      .filter(([x, y]) => 0 <= x && x <= 7 && 0 <= y && y <= 7)
+      .map(([x, y]) => x * 8 + y)
+      .filter((dst) => map[dst].side !== map[cur].side);
   },
   move: (map, cur, dst) => {
     if (kingRule.availableZone(map, cur).includes(dst)) {

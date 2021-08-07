@@ -7,6 +7,8 @@ export default Piece;
 export const EMPTY_PIECE = { ptype: PTYPE.EMPTY, side: SIDE.EMPTY };
 export const isPieceSame = (A: Piece, B: Piece) =>
   A.ptype === B.ptype && A.side === B.side;
+
+export const isEmptyPiece = (A: Piece) => isPieceSame(A, EMPTY_PIECE);
 export const isEnemy = (A: Piece, B: Piece) => isEnemySide(A.side, B.side);
 
 export const fromPiecetoString = ({ ptype, side }: Piece): String => {

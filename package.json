@@ -22,7 +22,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "test:service": "jest --config=jest.config.js; rm -rf __test__/dist"
   },
   "eslintConfig": {
     "extends": [
