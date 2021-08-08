@@ -33,6 +33,7 @@ export default class Chess {
       .split("")
       .forEach((c, idx) => {
         if ((<any>Object).values(PTYPE).includes(c.toLowerCase())) {
+          // Lowercase == black
           newMap.push(fromStringToPiece(c));
         } else throw Error(ErrorMessage.INPUT_FILE + `// "${c}"`);
       });
@@ -90,11 +91,16 @@ export default class Chess {
     throw new Error(ErrorMessage.MOVE);
   }
 
-  isCheckMate = () =>
-    !this.map.some((piece, cur) => {
+  isEndGame = (): "Checkmate" | "Stylemate" | undefined => {
+    const isAvailableToMove = this.map.some((piece, cur) => {
       if (piece.side === this.turn) return this.availableZone(cur).length !== 0;
       else return false;
     });
+    if (!isAvailableToMove) {
+      if (checkRule.isChecked(this.map, this.turn)) return "Checkmate";
+      else return "Stylemate";
+    }
+  };
 
   spawnPiece = (piece: Piece, cur: number) => (this.map[cur] = piece);
   killPiece = (cur: number): Piece => (this.map[cur] = EMPTY_PIECE);

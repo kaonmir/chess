@@ -20,9 +20,14 @@ const pawnRule: ruleIF = {
     return steps[side]
       .map((step) => step + cur)
       .filter((dst, idx, dsts) => {
+        if (dst < 0 || 63 < dst) return false;
+
         if (idx === 0) return isEmptyPiece(map[dst]);
-        if (idx === 1 && Math.floor(cur / 8) === initPosition[side])
-          return isEmptyPiece(map[dsts[idx - 1]]) && isEmptyPiece(map[dst]);
+        if (idx === 1) {
+          if (Math.floor(cur / 8) === initPosition[side])
+            return isEmptyPiece(map[dsts[idx - 1]]) && isEmptyPiece(map[dst]);
+          else return false;
+        }
 
         if (idx === 2 && dst % 8 === 7) return false;
         if (idx === 3 && dst % 8 === 0) return false;

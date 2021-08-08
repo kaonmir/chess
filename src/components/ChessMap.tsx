@@ -5,16 +5,8 @@ import styled, { css } from "styled-components";
 import SIDE from "../services/types/SIDE";
 
 const initFormat = JSON.stringify({
-  map: `
-    rnbqkbnr
-    pppppppp
-    ........
-    ........
-    ........
-    ........
-    PPPPPPPP
-    RNBKQBNR
-    `,
+  map: `rnbqkbnrpppppppp................................PPPPPPPPRNBKQBNR`,
+
   log: "",
 });
 
@@ -75,7 +67,10 @@ class ChessMap extends React.Component<Props, States> {
   };
 
   componentDidUpdate(_: Props, prevState: States) {
-    if (this.state.chess.isCheckMate()) alert("Checkmate!!");
+    const endGame = this.state.chess.isEndGame();
+
+    if (endGame === "Checkmate") alert("Checkmate!!");
+    else if (endGame === "Stylemate") alert("StyleMate!!");
   }
 
   render() {
