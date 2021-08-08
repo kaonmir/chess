@@ -1,11 +1,9 @@
-import React from 'react';
-import './App.css';
-import ChessMap from './components/ChessMap';
+import React from "react";
+import "./App.css";
+import ChessMap from "./components/ChessMap";
 
 function App() {
-  return (
-    <ChessMap />
-  );
+  return <ChessMap />;
 }
 
 export default App;
